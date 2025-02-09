@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app import models, schemas
+from app.exceptions import NotFoundException
 
 router = APIRouter(
     prefix="/categorias",  # Prefijo en las rutas de categoria
@@ -56,16 +57,16 @@ def actualizar_categoria(id: int, categoria: schemas.Categoria, db: Session = De
     - **nombre**: Nuevo nombre de la categoría.
     - **pasillo**: Nuevo número de pasillo.
     """
-    categoria_db = db.query(models.Categoria).filter(models.Categoria.id == id).first()
+    categoria = db.query(models.Categoria).filter(models.Categoria.id == id).first()
 
-    if not categoria_db:
-        return {"error": "Categoría no encontrada"}
+    if categoria is None:
+        raise NotFoundException(detail="Categoría no encontrada")
 
-    categoria_db.nombre = categoria.nombre
-    categoria_db.pasillo = categoria.pasillo
+    categoria.nombre = categoria.nombre
+    categoria.pasillo = categoria.pasillo
 
     db.commit()
-    db.refresh(categoria_db)
+    db.refresh(categoria)
 
     return {"mensaje": "Categoría actualizada con éxito"}
 
@@ -76,12 +77,12 @@ def eliminar_categoria(id: int, db: Session = Depends(get_db)):
     Elimina una categoría por su ID.
     - **id**: ID de la categoría a eliminar.
     """
-    categoria_db = db.query(models.Categoria).filter(models.Categoria.id == id).first()
+    categoria = db.query(models.Categoria).filter(models.Categoria.id == id).first()
 
-    if not categoria_db:
-        return {"error": "Categoría no encontrada"}
+    if categoria is None:
+        raise NotFoundException(detail="Categoría no encontrada")
 
-    db.delete(categoria_db)
+    db.delete(categoria)
     db.commit()
 
     return {"mensaje": "Categoría eliminada con éxito"}
