@@ -19,7 +19,7 @@ def create_tables():
 create_tables()
 
 app = FastAPI(
-    title="API de Supermercados",  # Título de la API
+    title="API de Supermercados",
     description="API para gestionar productos, supermercados, categorías y listas de compra.",
 )
 
