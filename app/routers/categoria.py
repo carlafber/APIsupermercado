@@ -34,7 +34,7 @@ def obtener_categoria(id: int, db: Session = Depends(get_db)):
     return db.query(models.Categoria).filter(models.Categoria.id == id).first()
 
 
-@router.post("/nueva")
+@router.post("/nueva", summary="Crear una nueva categoría")
 def crear_categoria(categoria: schemas.Categoria, db: Session = Depends(get_db)):
     """
     Crea una nueva categoría en el sistema.
@@ -46,3 +46,42 @@ def crear_categoria(categoria: schemas.Categoria, db: Session = Depends(get_db))
     db.commit()
     db.refresh(nueva_categoria)
     return{"Respuesta": "Categoría creada"}
+
+
+@router.put("/actualizar/{id}", summary="Actualizar una categoría")
+def actualizar_categoria(id: int, categoria: schemas.Categoria, db: Session = Depends(get_db)):
+    """
+    Actualiza una categoría por su ID.
+    - **id**: ID de la categoría a actualizar.
+    - **nombre**: Nuevo nombre de la categoría.
+    - **pasillo**: Nuevo número de pasillo.
+    """
+    categoria_db = db.query(models.Categoria).filter(models.Categoria.id == id).first()
+
+    if not categoria_db:
+        return {"error": "Categoría no encontrada"}
+
+    categoria_db.nombre = categoria.nombre
+    categoria_db.pasillo = categoria.pasillo
+
+    db.commit()
+    db.refresh(categoria_db)
+
+    return {"mensaje": "Categoría actualizada con éxito"}
+
+
+@router.delete("/eliminar/{id}", summary="Eliminar una categoría")
+def eliminar_categoria(id: int, db: Session = Depends(get_db)):
+    """
+    Elimina una categoría por su ID.
+    - **id**: ID de la categoría a eliminar.
+    """
+    categoria_db = db.query(models.Categoria).filter(models.Categoria.id == id).first()
+
+    if not categoria_db:
+        return {"error": "Categoría no encontrada"}
+
+    db.delete(categoria_db)
+    db.commit()
+
+    return {"mensaje": "Categoría eliminada con éxito"}
