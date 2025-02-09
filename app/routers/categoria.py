@@ -25,7 +25,7 @@ def obtener_categorias(db:Session=Depends(get_db)):
     return resultado 
 
 
-@router.get("/buscar/{id}", response_model=schemas.Categoria, summary="Obtener todas las categorías")
+@router.get("/buscar/{id}", response_model=schemas.Categoria, summary="Buscar categoría")
 def obtener_categoria(id: int, db: Session = Depends(get_db)):
     """
     Obtiene una categoría por su ID.
@@ -34,17 +34,15 @@ def obtener_categoria(id: int, db: Session = Depends(get_db)):
     return db.query(models.Categoria).filter(models.Categoria.id == id).first()
 
 
-@router.post("/nueva", response_model=schemas.Categoria)
+@router.post("/nueva")
 def crear_categoria(categoria: schemas.Categoria, db: Session = Depends(get_db)):
     """
     Crea una nueva categoría en el sistema.
     - **nombre**: Nombre de la categoría.
     - **pasillo**: El pasillo del supermercado donde se encuentra la categoría.
     """
-    db_categoria = models.Categoria(nombre=categoria.nombre, pasillo=categoria.pasillo)
-    db.add(db_categoria)
+    nueva_categoria = models.Categoria(nombre=categoria.nombre, pasillo=categoria.pasillo)
+    db.add(nueva_categoria)
     db.commit()
-    db.refresh(db_categoria)
-    return db_categoria
-
-
+    db.refresh(nueva_categoria)
+    return{"Respuesta": "Categoría creada"}

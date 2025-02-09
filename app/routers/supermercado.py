@@ -61,7 +61,7 @@ def obtener_listas_compra_supermercado(id: int, db: Session = Depends(get_db)):
     return resultado
 
 
-@router.post("/nuevo", response_model=schemas.Supermercado, summary="Crear un nuevo supermercado")
+@router.post("/nuevo", summary="Crear un nuevo supermercado")
 def crear_supermercado(supermercado: schemas.Supermercado, db: Session = Depends(get_db)):
     """
     Crea un supermercado en el sistema.
