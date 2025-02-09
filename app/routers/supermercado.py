@@ -88,4 +88,3 @@ def eliminar_supermercado(id: int, db: Session = Depends(get_db)):
     db.delete(supermercado)
     db.commit()
     return {"Respuesta": "Supermercado eliminado con éxito"}
-
