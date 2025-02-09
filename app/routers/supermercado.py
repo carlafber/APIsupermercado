@@ -27,7 +27,7 @@ def obtener_supermercados(db:Session=Depends(get_db)):
     return resultado 
 
 
-@router.get("/buscar/{id}", response_model=schemas.Supermercado)
+@router.get("/buscar/{id}", response_model=schemas.Supermercado, summary="Buscar supermercado")
 def obtener_supermercado(id: int, db: Session = Depends(get_db)):
     """
     Obtiene un supermercado por su ID.

@@ -105,5 +105,3 @@ def cargar_bd(db: Session):
         ]
         db.add_all(producto_lista_1 + producto_lista_2 + producto_lista_3)
         db.commit()
-
-    print("Datos iniciales cargados correctamente.")

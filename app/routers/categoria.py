@@ -8,7 +8,7 @@ router = APIRouter(
     tags=["Categorías"],  # Esta etiqueta agrupa las rutas en Swagger UI
 )
 
-@router.get("/")
+@router.get("/", summary="Obtener todas las categorías", description="Obtiene la lista de todas las categorías registradas en el sistema.")
 def obtener_categorias(db:Session=Depends(get_db)):
     data = db.query(models.Categoria).all()
 
@@ -24,7 +24,17 @@ def obtener_categorias(db:Session=Depends(get_db)):
 
     return resultado 
 
-@router.post("/", response_model=schemas.Categoria)
+
+@router.get("/buscar/{id}", response_model=schemas.Categoria, summary="Obtener todas las categorías")
+def obtener_categoria(id: int, db: Session = Depends(get_db)):
+    """
+    Obtiene una categoría por su ID.
+    - **id**: El ID de la categoría a buscar.
+    """
+    return db.query(models.Categoria).filter(models.Categoria.id == id).first()
+
+
+@router.post("/nueva", response_model=schemas.Categoria)
 def crear_categoria(categoria: schemas.Categoria, db: Session = Depends(get_db)):
     """
     Crea una nueva categoría en el sistema.
@@ -38,10 +48,3 @@ def crear_categoria(categoria: schemas.Categoria, db: Session = Depends(get_db))
     return db_categoria
 
 
-@router.get("/{categoria_id}", response_model=schemas.Categoria)
-def obtener_categoria(categoria_id: int, db: Session = Depends(get_db)):
-    """
-    Obtiene una categoría por su ID.
-    - **categoria_id**: El ID de la categoría a buscar.
-    """
-    return db.query(models.Categoria).filter(models.Categoria.id == categoria_id).first()
