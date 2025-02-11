@@ -7,8 +7,7 @@ from app.db.database import *
 from fastapi.responses import JSONResponse
 from app.exceptions import NotFoundException, UnauthorizedException, ForbiddenException, BadRequestException, InternalServerErrorException
 
-
-
+#Función para crear las tablas en la base de datos
 def create_tables():
     try:
         Base.metadata.create_all(bind=engine)

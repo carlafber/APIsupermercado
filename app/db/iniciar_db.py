@@ -4,8 +4,6 @@ from sqlalchemy.orm import Session
 
 # Función para cargar datos iniciales
 def cargar_bd(db: Session):
-
-    # Verificar si la base de datos tiene algún dato
     # Insertar datos en la tabla Supermercado si está vacía
     if not db.query(models.Supermercado).first():
         supermercados = [
