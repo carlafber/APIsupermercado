@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas import User
+from app.schemas import Usuario
 from app.db.database import get_db
 from app import models
 from app.utils import hash_password, check_password
 
 router = APIRouter(
-    prefix="/user",
-    tags=["User"]
+    prefix="/usuarios",
+    tags=["Usuarios"]
 )
 
 @router.get("/")
@@ -29,7 +29,7 @@ def obtener_usuarios(db:Session=Depends(get_db)):
     return resultado
 
 @router.post("/registrar")
-def registrar_uusario(user: User, db: Session = Depends(get_db)):
+def registrar_uusario(user: Usuario, db: Session = Depends(get_db)):
     # Encriptar la contraseña antes de guardarla
     hashed_password = hash_password(user.password)
     nuevo_usuario = models.Usuario(
@@ -45,7 +45,7 @@ def registrar_uusario(user: User, db: Session = Depends(get_db)):
 
 
 @router.post("/login")
-def login_user(user: User, db: Session = Depends(get_db)):
+def login_user(user: Usuario, db: Session = Depends(get_db)):
     usuario = db.query(models.Usuario).filter(models.Usuario.username == user.username).first()
     if usuario and check_password(user.password, usuario.password):
         return {"Respuesta": "Login exitoso"}

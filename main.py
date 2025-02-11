@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 import uvicorn
 from app import models
-from app.routers import user, producto, categoria, lista_compra, supermercado
+from app.routers import producto, categoria, lista_compra, supermercado, usuario
 from app.db.iniciar_db import *
 from app.db.database import *
 from fastapi.responses import JSONResponse
@@ -75,7 +75,7 @@ def startup_event():
     cargar_bd(db)
     db.close()
 
-app.include_router(user.router)
+app.include_router(usuario.router)
 app.include_router(supermercado.router)
 app.include_router(categoria.router)
 app.include_router(producto.router)

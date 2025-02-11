@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 # Esquema de Usuario
-class User(BaseModel):
+class Usuario(BaseModel):
     username: str
     password: str
     nombre: str
@@ -31,9 +31,7 @@ class Categoria(BaseModel):
 
 # Esquema de ProductoLista
 class ProductoLista(BaseModel):
-    id: int
-    lista_compra_id: int
-    producto_id: int
+    producto: str
     cantidad: int
     precio: float
 
@@ -49,14 +47,35 @@ class ListaCompra(BaseModel):
     class Config:
         orm_mode = True
 
+# Esquema de ListaCompra
+class ListaCompraRespNueva(BaseModel):
+    supermercado: str
+    usuario: str
+
+    class Config:
+        orm_mode = True
+
 # Esquema de Respuesta de Producto (ProductoResponse)
 class ProductoResponse(BaseModel):
-    id: int
     nombre: str
     precio: float
     supermercado: str
     categoria: str
-    pasillo: str
+
+    class Config:
+        orm_mode = True
+
+# Esquema de Respuesta de Producto (ProductoResponse)
+class ProductoRespActCat(BaseModel):
+    nombre: str
+    categoria: str
+
+    class Config:
+        orm_mode = True
+
+# Esquema de Respuesta de Producto (ProductoResponse)
+class ProductoRespActPre(BaseModel):
+    precio: float
 
     class Config:
         orm_mode = True
